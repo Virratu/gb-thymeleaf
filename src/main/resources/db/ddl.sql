@@ -19,3 +19,24 @@ DROP TABLE PRODUCT;
 SELECT * FROM PRODUCT;
 
 update product set status = 'ACTIVE' where id = 91
+
+-- Drop table
+
+-- DROP TABLE public.cart;
+
+CREATE TABLE public.cart (
+	username varchar NOT NULL,
+	id bigserial NOT NULL,
+	CONSTRAINT cart_pk PRIMARY KEY (id)
+);
+
+-- Drop table
+
+-- DROP TABLE public.cart_product;
+
+CREATE TABLE public.cart_product (
+	cart_id int8 NOT NULL,
+	product_id int8 NOT NULL,
+	CONSTRAINT cart_product_fk FOREIGN KEY (cart_id) REFERENCES public.cart(id),
+	CONSTRAINT cart_product_fk_1 FOREIGN KEY (product_id) REFERENCES public.product(id)
+);

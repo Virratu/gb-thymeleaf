@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.gb.gbthymeleafwinter.dao.CartDao;
 import ru.gb.gbthymeleafwinter.entity.Product;
+import ru.gb.gbthymeleafwinter.service.CartServices;
 import ru.gb.gbthymeleafwinter.service.ProductService;
 
 @Controller
@@ -13,11 +15,18 @@ import ru.gb.gbthymeleafwinter.service.ProductService;
 public class ProductController {
 
     private final ProductService productService;
+    private final CartServices cartServices;
 
     @GetMapping("/all")
     public String getProductList(Model model) {
         model.addAttribute("products", productService.findAll());
         return "product-list";
+    }
+
+    @GetMapping("/cart")
+    public String getCartList(Model model) {
+        model.addAttribute("products", cartServices.getCartProduct(cartServices.findByUsername("user")));
+        return "product-cart";
     }
 
     @GetMapping
@@ -45,4 +54,15 @@ public class ProductController {
         return "redirect:/product/all";
     }
 
+    @GetMapping("/cart/add")
+    public String addProductToCart(@RequestParam(name = "id") Long id){
+        cartServices.addProductToCart(cartServices.findByUsername("user"), productService.findById(id));
+        return "redirect:/product/all";
+    }
+
+    @GetMapping("/cart/delete")
+    public String deleteProductFromCart(@RequestParam(name = "id") Long id) {
+        cartServices.deleteProductFromCart(cartServices.findByUsername("user"),productService.findById(id));
+        return "redirect:/product/cart";
+    }
 }
