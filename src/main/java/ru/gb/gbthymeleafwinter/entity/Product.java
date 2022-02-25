@@ -53,6 +53,11 @@ public class Product {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    @ManyToMany
+    @JoinTable(name = "cart_product",
+                joinColumns = @JoinColumn(name = "product_id"),
+                inverseJoinColumns = @JoinColumn(name = "cart_id"))
+    private Set<Cart> carts;
 
     @Override
     public String toString() {

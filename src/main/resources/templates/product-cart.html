@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div th:replace="~{navbar :: navi(ProductList)}"/>
+<div th:replace="~{navbar :: navi(ProductCart)}"/>
 
 <div class="container">
 
@@ -24,26 +24,18 @@
                 <th scope="col">#</th>
                 <th scope="col">Наименование</th>
                 <th scope="col">Цена</th>
-                <th scope="col">Редактировать</th>
                 <th scope="col">Удалить</th>
-                <th scope="col">Корзина</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="product, i : ${products}"
-                th:classappend="${product.status.name() == 'ACTIVE'} ? 'table-secondary' : 'table-danger'"
+                th:classappend="table-secondary"
                 th:attr="prod_index=${product.id}">
                 <th scope="row" th:text="${i.count}"></th>
                 <td th:text="${product.title}"></td>
                 <td th:text="${product.cost}"></td>
                 <td>
-                    <a type="button" th:href="@{/product(id=${product.id})}" class="btn btn-warning">Редактировать</a>
-                </td>
-                <td>
-                    <a type="button" th:href="@{/product/delete(id=${product.id})}" class="btn btn-danger">Удалить</a>
-                </td>
-                <td>
-                    <a th:unless="${product.status.name() != 'ACTIVE'}" type="button" th:href="@{/product/cart/add(id=${product.id})}" class="btn btn-success">В корзину</a>
+                    <a type="button" th:href="@{/product/cart/delete(id=${product.id})}" class="btn btn-danger">Удалить из корзины</a>
                 </td>
             </tr>
             </tbody>
