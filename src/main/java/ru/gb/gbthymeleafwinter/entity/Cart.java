@@ -1,10 +1,12 @@
 package ru.gb.gbthymeleafwinter.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Setter
 @Getter
@@ -24,6 +26,7 @@ public class Cart {
     @JoinTable(name = "cart_product",
                 joinColumns = @JoinColumn(name = "cart_id"),
                 inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public boolean addProduct(Product product){

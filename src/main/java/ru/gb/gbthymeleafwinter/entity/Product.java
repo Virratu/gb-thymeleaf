@@ -1,6 +1,7 @@
 package ru.gb.gbthymeleafwinter.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.gb.gbthymeleafwinter.entity.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
@@ -57,6 +59,7 @@ public class Product {
     @JoinTable(name = "cart_product",
                 joinColumns = @JoinColumn(name = "product_id"),
                 inverseJoinColumns = @JoinColumn(name = "cart_id"))
+    @JsonIgnore
     private Set<Cart> carts;
 
     @Override
