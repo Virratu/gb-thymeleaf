@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Список продуктов</title>
@@ -24,9 +24,10 @@
                 <th scope="col">#</th>
                 <th scope="col">Наименование</th>
                 <th scope="col">Цена</th>
-                <th scope="col">Редактировать</th>
-                <th scope="col">Удалить</th>
-                <th scope="col">Корзина</th>
+                <th scope="col" sec:authorize="hasAuthority('ADMIN')">Редактировать</th>
+                <th scope="col" sec:authorize="hasAuthority('ADMIN')">Удалить</th>
+                <th scope="col" sec:authorize="hasAuthority('USER') || isAnonymous()">Просмотр</th>
+                <th scope="col" sec:authorize="hasAuthority('USER')">Корзина</th>
             </tr>
             </thead>
             <tbody>
@@ -36,13 +37,16 @@
                 <th scope="row" th:text="${i.count}"></th>
                 <td th:text="${product.title}"></td>
                 <td th:text="${product.cost}"></td>
-                <td>
+                <td sec:authorize="hasAuthority('ADMIN')">
                     <a type="button" th:href="@{/product(id=${product.id})}" class="btn btn-warning">Редактировать</a>
                 </td>
-                <td>
+                <td sec:authorize="hasAuthority('ADMIN')">
                     <a type="button" th:href="@{/product/delete(id=${product.id})}" class="btn btn-danger">Удалить</a>
                 </td>
-                <td>
+                <td sec:authorize="hasAuthority('USER') || isAnonymous()">
+                    <a type="button" th:href="@{'/product/' + ${product.id} }" class="btn btn-warning">Просмотреть</a>
+                </td>
+                <td sec:authorize="hasAuthority('USER')">
                     <a th:unless="${product.status.name() != 'ACTIVE'}" type="button" th:href="@{/product/cart/add(id=${product.id})}" class="btn btn-success">В корзину</a>
                 </td>
             </tr>

@@ -29,6 +29,18 @@ public class ProductController {
         return "product-cart";
     }
 
+    @GetMapping("/{productId}")
+    public String info(Model model, @PathVariable(name = "productId") Long id) {
+        Product product;
+        if (id != null) {
+            product = productService.findById(id);
+        } else {
+            return "redirect:/product/all";
+        }
+        model.addAttribute("product", product);
+        return "product-info";
+    }
+
     @GetMapping
     public String showForm(Model model, @RequestParam(name = "id", required = false) Long id) {
         Product product;
