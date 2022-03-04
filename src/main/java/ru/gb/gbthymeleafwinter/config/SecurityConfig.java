@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(
                 (requests) -> {
                     requests.mvcMatchers(HttpMethod.GET, "/product/{productId}").permitAll();
+                    requests.antMatchers(HttpMethod.GET, "/product/cart/add").permitAll();
                     requests.antMatchers("/product/all").permitAll();
                     requests.antMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
                 }
@@ -30,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
         http.formLogin();
         http.httpBasic();
+        http.logout().logoutSuccessUrl("/product/all");
     }
 
     @Bean

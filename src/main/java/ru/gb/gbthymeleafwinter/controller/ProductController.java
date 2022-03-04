@@ -9,6 +9,8 @@ import ru.gb.gbthymeleafwinter.entity.Product;
 import ru.gb.gbthymeleafwinter.service.CartServices;
 import ru.gb.gbthymeleafwinter.service.ProductService;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/product")
@@ -24,8 +26,8 @@ public class ProductController {
     }
 
     @GetMapping("/cart")
-    public String getCartList(Model model) {
-        model.addAttribute("products", cartServices.getCartProduct(cartServices.findByUsername("user")));
+    public String getCartList(Model model, Principal principal) {
+        model.addAttribute("products", cartServices.getCartProduct(cartServices.findByUsername(principal.getName())));
         return "product-cart";
     }
 
@@ -67,14 +69,18 @@ public class ProductController {
     }
 
     @GetMapping("/cart/add")
-    public String addProductToCart(@RequestParam(name = "id") Long id){
-        cartServices.addProductToCart(cartServices.findByUsername("user"), productService.findById(id));
+    public String addProductToCart(@RequestParam(name = "id") Long id, Principal principal){
+
+        if (principal == null) {
+            return "auth-required";
+        }
+        cartServices.addProductToCart(cartServices.findByUsername(principal.getName()), productService.findById(id));
         return "redirect:/product/all";
     }
 
     @GetMapping("/cart/delete")
-    public String deleteProductFromCart(@RequestParam(name = "id") Long id) {
-        cartServices.deleteProductFromCart(cartServices.findByUsername("user"),productService.findById(id));
+    public String deleteProductFromCart(@RequestParam(name = "id") Long id, Principal principal) {
+        cartServices.deleteProductFromCart(cartServices.findByUsername(principal.getName()),productService.findById(id));
         return "redirect:/product/cart";
     }
 }
