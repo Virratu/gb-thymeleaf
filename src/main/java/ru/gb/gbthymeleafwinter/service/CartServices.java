@@ -32,6 +32,11 @@ public class CartServices {
     }
 
     public Cart findByUsername(String username){
-        return cartDao.findByUsername(username);
+        Cart result = cartDao.findByUsername(username);
+        if (result == null) {
+            result = Cart.builder().username(username).build();
+        }
+        cartDao.save(result);
+        return result;
     }
 }
